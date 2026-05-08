@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBT Simulasi ANBK Kelas 5</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .hide { display: none !important; }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-gray-800">
+
+    <!-- Container Utama -->
+    <div id="app" class="min-h-screen flex flex-col"></div>
+
+    <script>
+        // --- DATA SOAL HASIL EKSTRAKSI ---
+        const soalData = {
+          "IPAS": [
+            {
+              id: 1,
+              jenis: "Isian",
+              konteks: "Ayah Edo bekerja di sebuah perusahaan pengeboran minyak. Setiap pagi, Ayah pergi ke tempat kerja di mana mesin-mesin besar terus-menerus memompa cairan hitam dari dalam tanah. Cairan ini akan diolah menjadi berbagai bahan bakar yang kita gunakan sehari-hari, seperti bensin untuk kendaraan atau gas untuk memasak. Edo tahu bahwa sumber energi ini sudah ada sejak jutaan tahun lalu, terbentuk dari sisa-sisa makhluk hidup purba, dan jumlahnya di bumi ini terbatas.",
+              pertanyaan: "Berdasarkan cerita Ayah Edo, salah satu contoh sumber energi yang jumlahnya terbatas dan tidak bisa diperbarui dengan cepat adalah ...."
+            },
+            {
+              id: 2,
+              jenis: "Isian",
+              konteks: "Akhir-akhir ini, Ibu sering mengeluh tentang cuaca yang semakin panas dan tagihan listrik yang terus naik. Paman Rio, seorang aktivis lingkungan, menjelaskan bahwa banyak energi berasal dari pembakaran batu bara atau minyak bumi yang mengeluarkan gas penyebab bumi panas. Beliau juga bilang kalau kita boros energi, bumi akan semakin sakit dan uang jajan kita juga bisa berkurang karena tagihan yang mahal.",
+              pertanyaan: "Berdasarkan penjelasan Paman Rio, pentingnya penghematan energi adalah untuk menjaga bumi agar tidak ...."
+            },
+            {
+              id: 3,
+              jenis: "Isian",
+              konteks: "Saat istirahat, Doni dan teman-teman bermain di luar kelas. Setelah bel masuk berbunyi, mereka buru-buru masuk dan lupa mematikan lampu serta kipas angin yang sudah menyala sejak pagi. Ibu Guru kemudian mengingatkan bahwa listrik yang terus menyala padahal tidak dipakai adalah pemborosan. Ibu Guru mengajak semua murid untuk menjadi pahlawan hemat energi di sekolah.",
+              pertanyaan: "Salah satu cara yang bisa Doni dan teman-teman lakukan untuk menghemat energi listrik di sekolah adalah ...."
+            },
+            {
+              id: 4,
+              jenis: "Isian",
+              konteks: "Desa Makmur sangat terkenal dengan kebersihannya dan inovasi warganya. Mereka sadar akan pentingnya menjaga lingkungan. Banyak rumah di sana memasang panel surya di atap untuk menghasilkan listrik dari cahaya matahari. Selain itu, ada juga beberapa kincir angin kecil yang digunakan untuk membantu memompa air irigasi ke sawah-sawah. Anak-anak desa juga diajarkan untuk mengubah sampah organik menjadi pupuk atau biogas untuk memasak.",
+              pertanyaan: "Berdasarkan cerita Desa Makmur, contoh pemanfaatan sumber energi alternatif yang bisa diterapkan adalah penggunaan ...."
+            },
+            {
+              id: 5,
+              jenis: "Isian",
+              konteks: "Setiap hari, miliaran orang di dunia menggunakan listrik, berkendara dengan mobil atau sepeda motor, dan berbagai aktivitas lain yang membutuhkan energi. Kebanyakan energi ini dihasilkan dari pembakaran bahan bakar fosil seperti batu bara, minyak bumi, dan gas alam. Ketika bahan bakar ini dibakar, ia melepaskan gas-gas tertentu ke atmosfer, seperti karbon dioksida. Gas-gas ini bertindak seperti selimut yang menyelimuti bumi, membuat panas matahari tidak bisa keluar sepenuhnya, sehingga suhu bumi jadi naik. Inilah yang kita kenal sebagai efek rumah kaca yang memicu perubahan iklim.",
+              pertanyaan: "Pembakaran bahan bakar fosil dapat menyebabkan peningkatan suhu bumi karena melepaskan gas yang memerangkap panas seperti selimut di atmosfer, yang dikenal sebagai efek ...."
+            },
+            {
+              id: 6,
+              jenis: "Uraian",
+              konteks: "Keluarga Budi sering lupa menutup keran air dengan rapat setelah mencuci tangan atau piring. Saat mandi, Budi juga terbiasa membiarkan air mengalir deras meskipun ia sedang menggosok sabun. Ibu sering mengeluh tagihan air membengkak dan kadang persediaan air di tandon cepat habis. Ayah menjelaskan bahwa air bersih juga merupakan sumber daya yang harus kita hemat, meskipun terlihat melimpah.",
+              pertanyaan: "Jika kamu adalah Budi, buatlah tiga rencana sederhana yang akan kamu lakukan di rumah untuk membantu menghemat penggunaan air!"
+            },
+            {
+              id: 7,
+              jenis: "Uraian",
+              konteks: "Keluarga Pak Joni baru saja memasang panel surya di atap rumahnya. Sekarang, sebagian besar kebutuhan listrik mereka dipenuhi oleh energi yang berasal dari matahari. Anak-anak Pak Joni sangat senang karena mereka tahu bahwa dengan panel surya, mereka bisa mendapatkan listrik tanpa harus membakar bahan bakar fosil yang mencemari udara. Mereka merasa rumah mereka menjadi lebih ramah lingkungan dan ikut berkontribusi mengurangi dampak perubahan iklim.",
+              pertanyaan: "Menurutmu, apa saja manfaat penggunaan panel surya bagi lingkungan, berdasarkan cerita keluarga Pak Joni?"
+            },
+            {
+              id: 8,
+              jenis: "Uraian",
+              konteks: "Akhir-akhir ini, semakin banyak orang yang tertarik menggunakan kendaraan listrik, seperti mobil atau motor listrik. Kendaraan ini tidak mengeluarkan asap dari knalpotnya, berbeda dengan kendaraan berbahan bakar bensin yang seringkali menyebabkan polusi udara. Namun, ada yang bilang listrik untuk mengisi daya kendaraan listrik itu tetap saja berasal dari pembangkit listrik yang masih menggunakan batu bara. Selain itu, proses pembuatan baterai untuk kendaraan listrik juga memerlukan penambangan bahan-bahan tertentu yang bisa merusak lingkungan.",
+              pertanyaan: "Coba analisislah, apa saja dampak positif dan negatif penggunaan kendaraan listrik terhadap lingkungan?"
+            },
+            {
+              id: 9,
+              jenis: "Uraian",
+              konteks: "Pemerintah dan masyarakat di seluruh dunia sudah mulai gencar melakukan berbagai tindakan untuk mengatasi perubahan iklim. Pemerintah membuat aturan untuk mengurangi emisi gas dari pabrik dan kendaraan, mendorong penggunaan energi terbarukan, serta program penanaman pohon besar-besaran. Sementara itu, masyarakat juga berpartisipasi dengan mengurangi penggunaan plastik, beralih ke transportasi umum atau sepeda, menghemat energi di rumah, dan aktif dalam kegiatan bersih-bersih lingkungan. Namun, banyak juga yang beranggapan bahwa perubahan masih terlalu lambat dan belum cukup untuk menghentikan dampak buruk perubahan iklim.",
+              pertanyaan: "Menurut pendapatmu, apakah tindakan-tindakan yang dilakukan oleh pemerintah dan masyarakat saat ini sudah cukup efektif untuk mengurangi dampak perubahan iklim? Jelaskan alasanmu!"
+            },
+            {
+              id: 10,
+              jenis: "Uraian",
+              konteks: "Di Desa Bahagia, warga sedang menghadapi masalah kenaikan biaya listrik dan kesulitan mendapatkan pasokan gas untuk memasak. Kepala Desa mengajak seluruh warga untuk melakukan musyawarah mencari solusi. Dalam pertemuan itu, Pak RT mengusulkan agar setiap keluarga mulai giat menghemat energi dan mencari cara untuk memanfaatkan sumber daya alam sekitar secara lebih bijak. Mereka juga berencana membuat jadwal piket untuk mematikan lampu jalan jika tidak diperlukan.",
+              pertanyaan: "Jika kamu tinggal di Desa Bahagia, bagaimana cara kamu mendukung gerakan hemat energi di lingkungan masyarakatmu?"
+            }
+          ],
+          "Matematika": [
+            {
+              id: 1,
+              jenis: "Isian",
+              konteks: "Setiap pagi, Tono rutin melakukan latihan melompat tali selama 180 detik. Latihan ini membantunya menjaga kesehatan jantung dan melatih kelincahan. Setelah melompat tali, Tono biasanya melanjutkan dengan peregangan ringan.",
+              pertanyaan: "Berapa menit waktu yang dihabiskan Tono untuk melompat tali setiap pagi?"
+            },
+            {
+              id: 2,
+              jenis: "Isian",
+              konteks: "Jarum jam dan jarum menit akan membentuk sebuah sudut yang berbeda-beda tergantung pada waktu yang ditunjukkan. Setiap jenis sudut memiliki nama dan ciri khasnya sendiri.",
+              pertanyaan: "Jarum jam dan jarum menit pada jam yang menunjukkan pukul 03.00 akan membentuk sudut jenis apa?"
+            },
+            {
+              id: 3,
+              jenis: "Isian",
+              konteks: "Setiap hari Minggu, keluarga Budi mengadakan 'Waktu Bermain Bersama'. Mereka mulai bermain pukul 14.30 dan selesai pukul 16.00. Permainan yang mereka lakukan sangat seru, mulai dari bermain monopoli hingga menyusun balok raksasa. Kegiatan ini mempererat tali persaudaraan mereka.",
+              pertanyaan: "Berapa lama durasi 'Waktu Bermain Bersama' keluarga Budi setiap hari Minggu?"
+            },
+            {
+              id: 4,
+              jenis: "Isian",
+              konteks: "Sekolah Dasar Harapan Bangsa mengadakan acara bazar buku. Berikut adalah data penjualan buku cerita selama 5 hari: Hari Senin: 25 buku, Hari Selasa: 30 buku, Hari Rabu: 40 buku, Hari Kamis: 35 buku, Hari Jumat: 50 buku. Bazar ini bertujuan untuk menumbuhkan minat baca siswa dan mengumpulkan dana untuk perpustakaan sekolah.",
+              pertanyaan: "Pada hari apa penjualan buku cerita paling banyak terjadi?"
+            },
+            {
+              id: 5,
+              jenis: "Isian",
+              konteks: "Kakek Joni bercerita bahwa ia tinggal di desa selama 3 tahun 6 bulan. Setelah itu, ia pindah ke kota selama 1 windu. Kemudian, ia kembali ke desa dan menetap selama 2 dasawarsa. Kakek Joni sangat menyukai kehidupan di desa maupun di kota karena masing-masing memiliki keunikan tersendiri. Ia banyak belajar dari pengalamannya di kedua tempat itu.",
+              pertanyaan: "Berapa total waktu Kakek Joni tinggal di kota dalam satuan bulan?"
+            },
+            {
+              id: 6,
+              jenis: "Uraian",
+              konteks: "Nenek Ani akan pergi ke rumah Tante Via yang berada di kota lain. Perjalanan dari rumah Nenek Ani ke stasiun memakan waktu 45 menit. Nenek Ani berangkat dari rumah pukul 07.15. Kereta yang akan Nenek Ani tumpangi berangkat pukul 08.30 dan membutuhkan waktu 3 jam 15 menit untuk sampai di stasiun tujuan. Tante Via sudah menunggu di stasiun tujuan untuk menjemput Nenek Ani, jadi Nenek Ani tidak perlu khawatir akan tersesat.",
+              pertanyaan: "Pukul berapa Nenek Ani akan tiba di stasiun tujuan? Tuliskan langkah-langkahmu dengan jelas."
+            },
+            {
+              id: 7,
+              jenis: "Uraian",
+              konteks: "Segitiga adalah bangun datar yang memiliki tiga sisi dan tiga sudut. Jumlah total besar sudut dalam sebuah segitiga selalu sama, tidak peduli bentuk segitiganya. Memahami sifat ini sangat berguna untuk menyelesaikan berbagai masalah matematika.",
+              pertanyaan: "Berapakah besar sudut C pada segitiga ABC? Jelaskan bagaimana kamu menemukan jawabannya."
+            },
+            {
+              id: 8,
+              jenis: "Uraian",
+              konteks: "Kelas 5B SD Maju Jaya melakukan survei tentang warna favorit teman-teman di kelas. Hasilnya adalah sebagai berikut: Merah: 8 siswa, Biru: 10 siswa, Hijau: 7 siswa, Kuning: 5 siswa, Ungu: 6 siswa. Data ini akan digunakan untuk menentukan warna seragam olahraga baru agar semua siswa merasa senang. Kegiatan ini melatih kemampuan siswa untuk berpendapat dan memilih.",
+              pertanyaan: "Sajikan data warna favorit siswa Kelas 5B tersebut ke dalam bentuk diagram batang. (Sertakan sumbu dan labelnya)."
+            },
+            {
+              id: 9,
+              jenis: "Uraian",
+              konteks: "Seorang petani menanam pohon mangga di kebunnya. Setiap bulan, ia mencatat tinggi rata-rata pohon mangga di kebunnya dalam diagram batang. Petani itu berharap pohon mangganya bisa berbuah lebat di masa depan. Ia percaya bahwa pemantauan rutin akan membantu memastikan pertumbuhan yang optimal dan menghasilkan buah yang manis.",
+              pertanyaan: "Berdasarkan data pada diagram batang, bagaimana perkembangan tinggi pohon mangga petani tersebut dari bulan ke bulan? Berapa perkiraan tinggi pohon mangga pada bulan Juni jika polanya terus berlanjut? Jelaskan alasanmu."
+            },
+            {
+              id: 10,
+              jenis: "Uraian",
+              konteks: "Kepala sekolah SD Ceria ingin mengadakan kegiatan olahraga bersama seluruh siswa. Ia memiliki dua rencana jadwal: Rencana A: Dimulai pukul 07.00 dan berakhir pukul 09.30. Rencana B: Dimulai pukul 07.45 dan berakhir pukul 10.00. Kepala sekolah juga memiliki data kehadiran siswa tahun lalu: Jika kegiatan selesai sebelum pukul 10.00, tingkat kehadiran 95%. Jika kegiatan selesai pada atau sesudah pukul 10.00, tingkat kehadiran 80%. Kepala sekolah ingin memilih rencana yang paling baik untuk memastikan siswa mendapatkan waktu olahraga yang cukup dan tingkat kehadiran tinggi. Satu jam pelajaran di SD Ceria adalah 35 menit. Kepala sekolah sangat peduli dengan kesehatan dan semangat belajar siswa-siswinya.",
+              pertanyaan: "Rencana jadwal manakah yang sebaiknya dipilih oleh Kepala Sekolah SD Ceria agar siswa mendapatkan durasi olahraga yang cukup (minimal 3 jam pelajaran) dan tingkat kehadiran yang tinggi? Evaluasi kedua rencana tersebut dan berikan alasannya secara rinci."
+            }
+          ],
+          "Bahasa Indonesia": [
+            {
+              id: 1,
+              jenis: "Isian",
+              konteks: "Nina ingin membuat kue bolu. Pertama, Nina mencampur tepung dan gula. Lalu, ia menambahkan telur dan susu. Setelah itu, adonan diaduk rata. Akhirnya, adonan dipanggang sampai matang. Nina senang karena kuenya jadi. Teman-temannya juga suka kue buatan Nina.",
+              pertanyaan: "Kalimat \"Nina mencampur tepung dan gula\" memiliki kata hubung yaitu ...."
+            },
+            {
+              id: 2,
+              jenis: "Isian",
+              konteks: "Pagi ini, adik ingin membuat teh manis sendiri. Ia sudah menyiapkan gelas, sendok, kantung teh, gula, dan air panas. Adik mengambil gelas dan memasukkan kantung teh. Kemudian, ia menuangkan air panas. Setelah itu, adik perlu menambahkan gula dan mengaduknya agar manis. Tapi adik bingung, berapa sendok gula yang pas?",
+              pertanyaan: "Untuk membuat teh manis dengan rasa yang pas, adik sebaiknya menambahkan gula sebanyak .... sendok makan."
+            },
+            {
+              id: 3,
+              jenis: "Isian",
+              konteks: "Hendra sangat ingin bermain sepak bola. Hendra harus menyelesaikan pekerjaan rumahnya terlebih dahulu.",
+              pertanyaan: "Jika dua kalimat di atas digabungkan menjadi kalimat majemuk bertingkat yang menyatakan syarat, maka kalimatnya akan menjadi \"Hendra akan bermain sepak bola .... selesai mengerjakan pekerjaan rumahnya.\""
+            },
+            {
+              id: 4,
+              jenis: "Isian",
+              konteks: "Mengapa es batu bisa mencair? Es batu terbuat dari air yang membeku pada suhu dingin. Ketika es batu diletakkan di tempat yang hangat atau suhu ruang, energi panas dari lingkungan sekitar akan berpindah ke es batu. Energi panas ini membuat partikel-partikel air dalam es batu bergerak lebih cepat dan ikatan antar partikelnya melemah. Akhirnya, es batu pun berubah kembali menjadi air cair. Proses ini disebut pelelehan atau pencairan. Itulah mengapa jika kita membiarkan es batu terlalu lama di luar kulkas, ia akan hilang dan hanya menyisakan genangan air.",
+              pertanyaan: "Penyebab utama es batu mencair adalah ...."
+            },
+            {
+              id: 5,
+              jenis: "Isian",
+              konteks: "Sebuah teks yang isinya menjelaskan tentang cara membuat atau melakukan sesuatu secara berurutan agar hasilnya tercapai dengan baik, dari awal sampai akhir.",
+              pertanyaan: "Sebuah teks yang isinya menjelaskan tentang cara membuat atau melakukan sesuatu secara berurutan agar hasilnya tercapai dengan baik, dari awal sampai akhir, disebut teks ...."
+            },
+            {
+              id: 6,
+              jenis: "Uraian",
+              konteks: "Edo ingin membuat lukisan pemandangan pantai yang indah di atas kertas. Dia sudah menyiapkan kertas gambar, pensil, penghapus, dan cat air dengan berbagai warna. Edo sangat bersemangat dan ingin memulai proses melukisnya. Dia tahu bahwa melukis harus dilakukan dengan beberapa tahapan agar hasilnya bagus dan rapi. Edo ingin lukisan pantainya terlihat hidup dengan ombak dan matahari terbenam.",
+              pertanyaan: "Tuliskan 3 langkah pertama yang Edo harus lakukan untuk memulai melukis pemandangan pantai tersebut! Gunakan kalimat yang jelas dan singkat."
+            },
+            {
+              id: 7,
+              jenis: "Uraian",
+              konteks: "Pelangi adalah fenomena alam yang sangat cantik, muncul setelah hujan atau saat gerimis. Pelangi terbentuk karena cahaya matahari membias dan memantul di dalam tetesan air hujan. Cahaya matahari yang putih sebenarnya terdiri dari banyak warna. Ketika cahaya ini melewati tetesan air hujan, ia akan terurai menjadi warna-warna spektrum yang berbeda, seperti merah, jingga, kuning, hijau, biru, nila, dan ungu. Setiap warna memiliki panjang gelombang yang berbeda, sehingga mereka memantul dan membias dengan sudut yang sedikit berbeda di dalam tetesan air. Karena itulah, kita bisa melihat deretan warna yang melengkung di langit. Ini adalah salah satu bukti keindahan fisika di alam.",
+              pertanyaan: "Jelaskan bagaimana urutan proses terjadinya pelangi menggunakan bahasamu sendiri!"
+            },
+            {
+              id: 8,
+              jenis: "Uraian",
+              konteks: "Untuk membuat jus mangga, siapkan mangga, air, blender. Kupas mangga, potong kecil. Masukkan ke blender. Tambah air. Nyalakan blender. Saring jus. Siap.",
+              pertanyaan: "Teks prosedur di atas terlalu sederhana dan kurang jelas. Perbaiki teks prosedur tersebut agar lebih mudah dipahami oleh pembaca, dengan menambahkan detail atau menggunakan kalimat majemuk (minimal 2 kalimat majemuk) untuk menjelaskan setiap langkahnya."
+            },
+            {
+              id: 9,
+              jenis: "Uraian",
+              konteks: "Di sekolah Dinda ada acara pentas seni. Dinda ingin sekali ikut menari, namun dia juga harus membantu ibunya menyiapkan makanan untuk dibawa ke acara tersebut.",
+              pertanyaan: "Buatlah sebuah kalimat majemuk setara yang menggambarkan keinginan Dinda dan kewajibannya di atas!"
+            },
+            {
+              id: 10,
+              jenis: "Uraian",
+              konteks: "Pohon kelapa banyak ditemukan di daerah pantai dan memiliki banyak manfaat. Buahnya bisa diminum airnya dan dimakan dagingnya. Daunnya sering digunakan untuk membuat anyaman, sedangkan batangnya bisa dipakai sebagai bahan bangunan. Akar pohon kelapa juga bisa menahan erosi tanah. Maka dari itu, pohon kelapa sering disebut pohon serbaguna.",
+              pertanyaan: "Paragraf di atas termasuk jenis teks apakah? Jelaskan alasannya dengan singkat!"
+            }
+          ]
+        };
+
+        // --- STATE APLIKASI ---
+        let state = {
+            screen: 'login', // login, dashboard, test, finish
+            subject: null,
+            currentIndex: 0,
+            namaLengkap: '',
+            satuanPendidikan: '',
+            answers: { IPAS: {}, Matematika: {}, "Bahasa Indonesia": {} },
+            doubtful: { IPAS: {}, Matematika: {}, "Bahasa Indonesia": {} },
+            showNavList: false,
+            timeLeft: 7200,
+            timerInterval: null
+        };
+
+        // --- FUNGSI UTAMA RENDER ---
+        function render() {
+            const app = document.getElementById('app');
+            app.innerHTML = ''; // Clear current view
+
+            if (state.screen === 'login') app.innerHTML = renderLogin();
+            else if (state.screen === 'dashboard') app.innerHTML = renderDashboard();
+            else if (state.screen === 'test') app.innerHTML = renderTest();
+            else if (state.screen === 'finish') app.innerHTML = renderFinish();
+
+            // Initialize Lucide Icons after DOM update
+            lucide.createIcons();
+        }
+
+        // --- FUNGSI FORMAT WAKTU ---
+        function formatTime(seconds) {
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = seconds % 60;
+            return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+
+        // --- FUNGSI LOGIKA APP ---
+        function checkLoginInputs() {
+            const nama = document.getElementById('inputNama').value;
+            const sekolah = document.getElementById('inputSekolah').value;
+            state.namaLengkap = nama;
+            state.satuanPendidikan = sekolah;
+
+            const btn = document.getElementById('btnLogin');
+            if (nama.trim() !== '' && sekolah.trim() !== '') {
+                btn.disabled = false;
+                btn.classList.remove('bg-gray-400', 'cursor-not-allowed', 'text-gray-200');
+                btn.classList.add('bg-blue-600', 'hover:bg-blue-700', 'text-white');
+            } else {
+                btn.disabled = true;
+                btn.classList.add('bg-gray-400', 'cursor-not-allowed', 'text-gray-200');
+                btn.classList.remove('bg-blue-600', 'hover:bg-blue-700', 'text-white');
+            }
+        }
+
+        function doLogin() {
+            if (state.namaLengkap.trim() && state.satuanPendidikan.trim()) {
+                state.screen = 'dashboard';
+                render();
+            }
+        }
+
+        function doLogout() {
+            state.screen = 'login';
+            state.namaLengkap = '';
+            state.satuanPendidikan = '';
+            render();
+        }
+
+        function startTest(subject) {
+            state.subject = subject;
+            state.currentIndex = 0;
+            state.screen = 'test';
+            state.timeLeft = 7200;
+            
+            // Handle Timer
+            if (state.timerInterval) clearInterval(state.timerInterval);
+            state.timerInterval = setInterval(() => {
+                if (state.timeLeft > 0) {
+                    state.timeLeft--;
+                    const timerEl = document.getElementById('timer-display');
+                    if (timerEl) timerEl.innerText = formatTime(state.timeLeft);
+                } else {
+                    clearInterval(state.timerInterval);
+                    finishTest(true);
+                }
+            }, 1000);
+
+            render();
+        }
+
+        function handleAnswerChange(val) {
+            state.answers[state.subject][state.currentIndex] = val;
+            renderNavListItems(); // Hanya update daftar navigasi jika ada
+        }
+
+        function handleToggleDoubtful(isChecked) {
+            state.doubtful[state.subject][state.currentIndex] = isChecked;
+            renderNavListItems();
+        }
+
+        function prevQuestion() {
+            if (state.currentIndex > 0) {
+                state.currentIndex--;
+                render();
+            }
+        }
+
+        function nextQuestion() {
+            const totalQ = soalData[state.subject].length;
+            if (state.currentIndex < totalQ - 1) {
+                state.currentIndex++;
+                render();
+            } else {
+                if (confirm("Apakah Anda yakin ingin menyelesaikan tes ini?")) {
+                    finishTest();
+                }
+            }
+        }
+
+        function jumpToQuestion(index) {
+            state.currentIndex = index;
+            if (window.innerWidth < 1024) toggleNavList(); // Auto close on mobile
+            render();
+        }
+
+        function toggleNavList() {
+            state.showNavList = !state.showNavList;
+            render();
+        }
+
+        function finishTest(autoFinish = false) {
+            if (state.timerInterval) clearInterval(state.timerInterval);
+            if(autoFinish) alert("Waktu Habis! Ujian akan diselesaikan secara otomatis.");
+            state.screen = 'finish';
+            render();
+        }
+
+        function goDashboard() {
+            state.screen = 'dashboard';
+            render();
+        }
+
+        // --- RENDER LAYAR ---
+        function renderLogin() {
+            return `
+            <div class="flex-1 flex items-center justify-center p-4">
+                <div class="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden border-t-4 border-blue-600">
+                    <div class="bg-blue-600 p-6 text-center text-white">
+                        <h1 class="text-2xl font-bold tracking-wider">CBT ANBK</h1>
+                        <p class="text-blue-100 text-sm mt-1">Sistem Ujian Berbasis Komputer</p>
+                    </div>
+                    <div class="p-8">
+                        <div class="mb-6">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Nama Lengkap</label>
+                            <input type="text" id="inputNama" value="${state.namaLengkap}" placeholder="Masukkan Nama Lengkap" oninput="checkLoginInputs()" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" />
+                        </div>
+                        <div class="mb-8">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Satuan Pendidikan</label>
+                            <input type="text" id="inputSekolah" value="${state.satuanPendidikan}" placeholder="Masukkan Asal Sekolah" oninput="checkLoginInputs()" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" />
+                        </div>
+                        <button id="btnLogin" onclick="doLogin()" disabled class="w-full font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline transition duration-200 bg-gray-400 cursor-not-allowed text-gray-200">
+                            LOGIN
+                        </button>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        function renderDashboard() {
+            let cardsHTML = '';
+            for (const sub in soalData) {
+                cardsHTML += `
+                <div class="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition bg-white">
+                    <div class="bg-blue-50 p-4 border-b text-center">
+                        <h3 class="font-bold text-lg text-blue-800">${sub}</h3>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-sm text-gray-600 mb-2"><strong>Status:</strong> Tersedia</p>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Jumlah Soal:</strong> ${soalData[sub].length} Butir</p>
+                        <button onclick="startTest('${sub}')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
+                            Mulai Tes
+                        </button>
+                    </div>
+                </div>
+                `;
+            }
+
+            return `
+            <header class="bg-blue-700 text-white p-4 shadow-md flex justify-between items-center">
+                <div class="font-bold text-xl hidden sm:block">DASHBOARD PESERTA</div>
+                <div class="font-bold text-xl sm:hidden">DASHBOARD</div>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="user" class="w-5 h-5"></i>
+                        <span class="font-semibold text-sm sm:text-base">${state.namaLengkap}</span>
+                    </div>
+                    <button onclick="doLogout()" class="bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-sm font-bold flex items-center gap-1 transition">
+                        <i data-lucide="log-out" class="w-4 h-4"></i> <span class="hidden sm:inline">Keluar</span>
+                    </button>
+                </div>
+            </header>
+            
+            <main class="container mx-auto p-4 sm:p-8 flex-1">
+                <div class="bg-white rounded-lg shadow-md p-6 border-t-4 border-blue-500">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Daftar Tes Tersedia</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        ${cardsHTML}
+                    </div>
+                </div>
+            </main>
+            `;
+        }
+
+        function renderFinish() {
+            return `
+            <div class="flex-1 flex items-center justify-center p-4">
+                <div class="bg-white rounded-lg shadow-xl p-8 max-w-md w-full text-center border-t-4 border-green-500">
+                    <div class="flex justify-center mb-4 text-green-500">
+                        <i data-lucide="check-square" class="w-20 h-20"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-800 mb-2">Tes Selesai!</h1>
+                    <p class="text-gray-600 mb-6">Anda telah menyelesaikan tes ${state.subject}. Jawaban Anda telah tersimpan di sistem.</p>
+                    <button onclick="goDashboard()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition">
+                        Kembali ke Dashboard
+                    </button>
+                </div>
+            </div>
+            `;
+        }
+
+        function renderTest() {
+            const currentQuestions = soalData[state.subject];
+            const currentQ = currentQuestions[state.currentIndex];
+            const answerValue = state.answers[state.subject][state.currentIndex] || "";
+            const isDoubtful = state.doubtful[state.subject][state.currentIndex] || false;
+            
+            const isLast = state.currentIndex === currentQuestions.length - 1;
+            const isFirst = state.currentIndex === 0;
+
+            const nextBtnText = isLast ? 'SELESAI' : 'SOAL BERIKUTNYA';
+            const nextBtnClass = isLast ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700';
+            const nextBtnIcon = isLast ? '' : '<i data-lucide="chevron-right" class="w-5 h-5 ml-1"></i>';
+            const prevBtnClass = isFirst ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-gray-600 hover:bg-gray-700 text-white shadow';
+
+            // Sidebar (NavList)
+            const navListHTML = state.showNavList ? `
+            <div class="w-80 bg-white shadow-sm border-l border-gray-300 flex flex-col transition-all z-10 absolute right-0 top-0 bottom-0 lg:static lg:w-80">
+                <div class="bg-[#1e3a8a] text-white p-3 font-bold flex justify-between items-center">
+                    Daftar Soal
+                    <button onclick="toggleNavList()" class="text-blue-200 hover:text-white lg:hidden"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <div class="flex-1 p-4 overflow-y-auto">
+                    <div id="navListGrid" class="grid grid-cols-4 gap-2">
+                        <!-- Items rendered by renderNavListItems() -->
+                    </div>
+                    <div class="mt-8 border-t pt-4">
+                        <h4 class="font-bold text-sm text-gray-600 mb-3">Keterangan:</h4>
+                        <div class="flex flex-col gap-2 text-sm">
+                            <div class="flex items-center gap-2"><div class="w-4 h-4 bg-white border border-gray-400"></div> Belum Dijawab</div>
+                            <div class="flex items-center gap-2"><div class="w-4 h-4 bg-blue-600 border border-blue-700"></div> Sudah Dijawab</div>
+                            <div class="flex items-center gap-2"><div class="w-4 h-4 bg-yellow-400 border border-yellow-500"></div> Ragu-ragu</div>
+                            <div class="flex items-center gap-2"><div class="w-4 h-4 border border-gray-400 ring-2 ring-blue-300"></div> Posisi Saat Ini</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ` : '';
+
+            // Overlay for mobile when sidebar is open
+            const overlayHTML = state.showNavList ? `
+                <div onclick="toggleNavList()" class="fixed inset-0 bg-black/50 z-0 lg:hidden"></div>
+            ` : '';
+
+            setTimeout(() => {
+                if(state.showNavList) renderNavListItems();
+            }, 0);
+
+            return `
+            <div class="flex-1 flex flex-col bg-[#e9ecef]">
+                <!-- HEADER ANBK STYLE -->
+                <header class="bg-[#1e3a8a] text-white shadow-md z-20 relative">
+                    <div class="flex justify-between items-center px-4 py-2 border-b border-blue-800">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center text-blue-800 font-bold text-xs">CBT</div>
+                            <h1 class="text-lg font-bold tracking-wide hidden sm:block">CBT SIMULASI</h1>
+                        </div>
+                        <div class="flex items-center gap-6 text-sm">
+                            <div class="bg-blue-900 px-3 py-1 rounded border border-blue-700 truncate max-w-[200px] sm:max-w-none">
+                                <span class="text-blue-200 hidden sm:inline">Peserta:</span> <span class="font-bold">${state.namaLengkap} (${state.satuanPendidikan})</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center px-4 py-3 bg-[#2546a1]">
+                        <div class="font-bold text-sm sm:text-lg">${state.subject} - KELAS 5</div>
+                        <div class="flex items-center gap-2 sm:gap-4">
+                            <div class="flex items-center gap-2 bg-black/20 px-2 sm:px-3 py-1 rounded text-yellow-300 font-mono text-base sm:text-lg font-bold border border-black/30">
+                                <i data-lucide="clock" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                                <span id="timer-display">${formatTime(state.timeLeft)}</span>
+                            </div>
+                            <button onclick="toggleNavList()" class="flex items-center gap-2 bg-white text-blue-900 px-2 sm:px-3 py-1 rounded font-bold hover:bg-gray-100 text-sm sm:text-base">
+                                <i data-lucide="layout-grid" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                                <span class="hidden sm:inline">Daftar Soal</span>
+                            </button>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- MAIN CONTENT AREA -->
+                <main class="flex-1 flex p-2 sm:p-4 gap-4 overflow-hidden relative">
+                    
+                    ${overlayHTML}
+
+                    <!-- AREA SOAL KIRI -->
+                    <div class="flex-1 bg-white rounded shadow-sm border border-gray-300 flex flex-col overflow-hidden relative z-0">
+                        
+                        <!-- Info Soal Top Bar -->
+                        <div class="bg-[#f8f9fa] border-b border-gray-300 p-3 flex justify-between items-center">
+                            <div class="font-bold text-base sm:text-lg text-gray-800 flex items-center gap-2">
+                                <span class="bg-[#1e3a8a] text-white px-3 py-1 rounded">Soal No. ${state.currentIndex + 1}</span>
+                                <span class="text-xs sm:text-sm font-normal text-gray-500 bg-gray-200 px-2 py-0.5 rounded">Tipe: ${currentQ.jenis}</span>
+                            </div>
+                            <div class="text-xs sm:text-sm text-gray-500 hidden sm:block">Ukuran Font: <span class="font-bold cursor-pointer">A</span> <span class="text-lg font-bold cursor-pointer">A</span></div>
+                        </div>
+
+                        <!-- Konten Soal -->
+                        <div class="flex-1 p-4 sm:p-6 overflow-y-auto text-gray-800 text-base sm:text-lg leading-relaxed">
+                            <div class="mb-6 text-justify">
+                                ${currentQ.konteks}
+                            </div>
+                            <div class="font-bold mb-6 text-black">
+                                ${currentQ.pertanyaan}
+                            </div>
+                            <!-- Area Jawaban -->
+                            <div class="mt-8 border-t pt-6">
+                                <label class="block font-bold text-gray-700 mb-2">Jawaban Anda:</label>
+                                <textarea oninput="handleAnswerChange(this.value)" class="w-full h-40 p-4 border border-gray-400 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none text-base sm:text-lg shadow-inner bg-[#fdfdfd]" placeholder="Ketik jawaban Anda di sini...">${answerValue}</textarea>
+                            </div>
+                        </div>
+
+                        <!-- Navigasi Bawah -->
+                        <div class="bg-[#f8f9fa] border-t border-gray-300 p-3 sm:p-4 flex justify-between items-center flex-wrap gap-3">
+                            <button onclick="prevQuestion()" ${isFirst ? 'disabled' : ''} class="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 rounded font-bold transition text-xs sm:text-base ${prevBtnClass}">
+                                <i data-lucide="chevron-left" class="w-4 h-4 sm:w-5 sm:h-5"></i> <span class="hidden sm:inline">SOAL SEBELUMNYA</span><span class="sm:hidden">SEBELUMNYA</span>
+                            </button>
+
+                            <label class="flex items-center gap-2 sm:gap-3 cursor-pointer bg-yellow-400 hover:bg-yellow-500 px-4 sm:px-6 py-2 rounded font-bold text-yellow-900 shadow transition text-xs sm:text-base">
+                                <input type="checkbox" onchange="handleToggleDoubtful(this.checked)" ${isDoubtful ? 'checked' : ''} class="w-4 h-4 sm:w-5 sm:h-5 accent-yellow-600" />
+                                RAGU-RAGU
+                            </label>
+
+                            <button onclick="nextQuestion()" class="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 rounded font-bold shadow transition text-xs sm:text-base text-white ${nextBtnClass}">
+                                <span>${nextBtnText}</span> ${nextBtnIcon}
+                            </button>
+                        </div>
+                    </div>
+
+                    ${navListHTML}
+                </main>
+            </div>
+            `;
+        }
+
+        function renderNavListItems() {
+            const grid = document.getElementById('navListGrid');
+            if(!grid) return;
+
+            const currentQuestions = soalData[state.subject];
+            let html = '';
+
+            currentQuestions.forEach((q, idx) => {
+                const answerStr = state.answers[state.subject][idx];
+                const isAnswered = answerStr && answerStr.trim() !== "";
+                const isDoubtful = state.doubtful[state.subject][idx];
+                const isActive = state.currentIndex === idx;
+                
+                let btnClass = "h-12 border rounded font-bold flex items-center justify-center transition-all relative ";
+                
+                if (isActive) btnClass += "ring-4 ring-blue-300 ";
+
+                if (isDoubtful) {
+                    btnClass += "bg-yellow-400 text-yellow-900 border-yellow-500";
+                } else if (isAnswered) {
+                    btnClass += "bg-blue-600 text-white border-blue-700";
+                } else {
+                    btnClass += "bg-white text-gray-700 border-gray-400 hover:bg-gray-100";
+                }
+
+                const checkIcon = (isAnswered && !isDoubtful) ? `<i data-lucide="check-square" class="w-3 h-3 absolute bottom-1 right-1 opacity-70"></i>` : '';
+
+                html += `
+                <button onclick="jumpToQuestion(${idx})" class="${btnClass}">
+                    ${idx + 1}
+                    ${checkIcon}
+                </button>
+                `;
+            });
+
+            grid.innerHTML = html;
+            lucide.createIcons(); // Update icons dynamically inserted
+        }
+
+        // --- INIT APLIKASI ---
+        document.addEventListener("DOMContentLoaded", () => {
+            render();
+            // Inisialisasi pengecekan button login saat pertama dimuat
+            if (state.screen === 'login') checkLoginInputs();
+        });
+
+    </script>
+</body>
+</html>
